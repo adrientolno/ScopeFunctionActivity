@@ -6,6 +6,8 @@ import android.os.Bundle
 import android.util.Log
 import android.view.View
 import android.widget.TextView
+import java.text.Format
+import java.text.SimpleDateFormat
 import kotlin.random.Random
 
 class MainActivity : AppCompatActivity() {
@@ -13,11 +15,16 @@ class MainActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
 
+        Log.d("function out", getTestDataArray().toString())
+
+
         // You can test your helper functions by  calling them from onCreate() and
         // printing their output to the Log, which is visible in the LogCat:
         // eg. Log.d("function output", getTestDataArray().toString())
 
     }
+
+    //private fun getFormatedData = MutableList(10).(Format(Date))
 
 
     /* Convert all the helper functions below to Single-Expression Functions using Scope Functions */
@@ -27,26 +34,26 @@ class MainActivity : AppCompatActivity() {
     // Look at the final/return value and build the function "working backwards"
 
     // Return a list of random, sorted integers
-    private fun getTestDataArray() : List<Int> {
-        val testArray = MutableList(10){ Random.nextInt()}
-        testArray.sort()
-        return testArray
-    }
+
+  private fun getTestDataArray() =  MutableList(10){ Random.nextInt()}.sorted()
+
+
 
     // Return true if average value in list is greater than median value, false otherwise
     private fun averageLessThanMedian(listOfNumbers: List<Double>): Boolean {
         val avg = listOfNumbers.average()
-        val sortedList = listOfNumbers.sorted()
-        val median = if (sortedList.size % 2 == 0)
-            (sortedList[sortedList.size / 2] + sortedList[(sortedList.size - 1) / 2]) / 2
-        else
-            sortedList[sortedList.size / 2]
 
+        val median = listOfNumbers.sorted().let {
+            if (it.size % 2 == 0)
+                (it[it.size / 2] + it[(it.size - 1) / 2]) / 2
+            else
+                it[it.size / 2]
+        }
         return avg < median
     }
 
     // Create a view from an item in a collection, but recycle if possible (similar to an AdapterView's adapter)
-    private fun getView(position: Int, recycledView: View?, collection: List<Int>, context: Context): View {
+    private fun getView(position: Int, recycledView: View?, collection: List<Int>, context: Context): View = (recycledView ?: TextView(context).apply {
         val textView: TextView
 
         if (recycledView != null) {
@@ -59,7 +66,7 @@ class MainActivity : AppCompatActivity() {
 
         textView.text = collection[position].toString()
 
-        return textView
-    }
+
+    })
 
 }
